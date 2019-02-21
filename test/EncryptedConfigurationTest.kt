@@ -40,4 +40,24 @@ class EncryptedConfigurationTest {
 
         assertEquals(expected, config)
     }
+
+    @Test
+    fun `it should encrypt an unencrypted config`() {
+        val encrypted = Base64.getDecoder().decode("Sx86jN1IRpN6epiTS/Ct6ZmeN7XP3kWtRP116TKLnLMPsxh9dUzEU2RFd3qDCjGT")
+        val key = "thisisnotarealmasterkeybutitwork"
+        val unencrypted = """
+            ktor {
+              port: 8080
+            }
+
+            app {
+              test: one
+            }
+
+        """.trimIndent()
+
+        val config = EncryptConfiguration.encryptConfiguration(StringBuffer(unencrypted), SecretKeySpec(key.toByteArray(), "AES"))
+
+        assert(encrypted.contentEquals(config))
+    }
 }
