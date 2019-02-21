@@ -46,7 +46,7 @@ object EncryptConfiguration {
         }
 
         if (specified == 0) {
-            return File(loader.getResource("application.encrypted").toURI())
+            return File(loader.getResource("application.conf.encrypted").toURI())
         }
 
         if (resource != null) {
@@ -117,7 +117,7 @@ object EncryptConfiguration {
         }
 
         // TODO This could be streamed with some alterations
-        return Base64.getDecoder().decode(encoded.toString())
+        return Base64.getDecoder().decode(encoded.toString().trimEnd())
     }
 
     private fun isUsingSpecifiedConfiguration(): Boolean {
@@ -126,7 +126,7 @@ object EncryptConfiguration {
     /**
      * A loading strategy to pull the configuration from an encrypted file on the system.
      */
-    open class EncryptedConfigLoadingStrategy() : ConfigLoadingStrategy {
+    open class EncryptedConfigLoadingStrategy: ConfigLoadingStrategy {
         override fun parseApplicationConfig(parseOptions: ConfigParseOptions): Config {
             val loader = parseOptions.classLoader ?: throw ConfigException.BugOrBroken(
                 "ClassLoader should have been set here; bug in ConfigFactory. "
