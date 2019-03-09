@@ -51,6 +51,14 @@ kotlin.sourceSets["test"].kotlin.srcDirs("test")
 sourceSets["main"].resources.srcDirs("resources")
 sourceSets["test"].resources.srcDirs("testresources")
 
+credentials {
+    credentialsFile = file("resources/credentials.conf.enc")
+    masterKeyFile = file("resources/master.key")
+}
+
 flyway {
     locations = arrayOf("filesystem:resources/db/migration")
+    user = credentials.getString("flyway.user")
+    password = credentials.getString("flyway.password")
+    url = credentials.getString("flyway.url")
 }
