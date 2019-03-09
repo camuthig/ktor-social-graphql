@@ -3,13 +3,13 @@ package org.camuthig.auth
 import io.ktor.application.ApplicationCall
 import io.ktor.auth.OAuthAccessTokenResponse
 import io.ktor.auth.OAuthServerSettings
-import io.ktor.html.respondHtml
+import io.ktor.html.Template
 import io.ktor.locations.locations
 import kotlinx.html.*
 
-// TODO Clean up this code to be templates instead
-suspend fun ApplicationCall.loginPage(loginProviders: Map<String, OAuthServerSettings>) {
-    respondHtml {
+// TODO Make the `call` parameter more implicit to all templates somehow. It should always be there.
+class LoginPage(private val call: ApplicationCall, private val loginProviders: Map<String, OAuthServerSettings>) : Template<HTML> {
+    override fun HTML.apply() {
         head {
             title { +"Login with" }
         }
@@ -20,7 +20,7 @@ suspend fun ApplicationCall.loginPage(loginProviders: Map<String, OAuthServerSet
 
             for (p in loginProviders) {
                 p {
-                    a(href = application.locations.href(Login(p.key))) {
+                    a(href = call.application.locations.href(LoginCallback(p.key))) {
                         +p.key
                     }
                 }
@@ -29,8 +29,8 @@ suspend fun ApplicationCall.loginPage(loginProviders: Map<String, OAuthServerSet
     }
 }
 
-suspend fun ApplicationCall.loginFailedPage(errors: List<String>) {
-    respondHtml {
+class LoginFailure(private val errors: List<String>): Template<HTML> {
+    override fun HTML.apply() {
         head {
             title { +"Login with" }
         }
@@ -48,8 +48,8 @@ suspend fun ApplicationCall.loginFailedPage(errors: List<String>) {
     }
 }
 
-suspend fun ApplicationCall.loggedInSuccessResponse(callback: OAuthAccessTokenResponse) {
-    respondHtml {
+class LoginSuccess(private val callback: OAuthAccessTokenResponse): Template<HTML> {
+    override fun HTML.apply() {
         head {
             title { +"Logged in" }
         }

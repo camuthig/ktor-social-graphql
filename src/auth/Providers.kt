@@ -18,9 +18,9 @@ fun Application.installAuth() {
         oauth {
             client = HttpClient(Apache)
             providerLookup = {
-                oauthProviders(application)[application.locations.resolve<Login>(Login::class, this).provider]
+                oauthProviders(application)[application.locations.resolve<LoginCallback>(LoginCallback::class, this).provider]
             }
-            urlProvider = { p -> redirectUrl(Login(p.name), false) }
+            urlProvider = { p -> redirectUrl(LoginCallback(p.name), false) }
         }
     }
 }
