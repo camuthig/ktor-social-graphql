@@ -9,6 +9,7 @@ plugins {
     application
     id("org.flywaydb.flyway") version "5.2.4"
     kotlin("jvm") version "1.3.20"
+    id("org.camuthig.credentials") version "0.1.0"
 }
 
 group = "ktor-social-graphql"
@@ -22,6 +23,9 @@ repositories {
     mavenLocal()
     jcenter()
     maven { url = uri("https://kotlin.bintray.com/ktor") }
+    maven {
+        url = uri("https://dl.bintray.com/camuthig/maven")
+    }
 }
 
 dependencies {
@@ -37,6 +41,7 @@ dependencies {
     compile("io.ktor:ktor-client-core-jvm:$ktor_version")
     compile("io.ktor:ktor-client-apache:$ktor_version")
     compile("org.postgresql:postgresql:42.2.5")
+    implementation("org.camuthig.credentials:core:0.1.1")
     testCompile("io.ktor:ktor-server-tests:$ktor_version")
 }
 

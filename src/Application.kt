@@ -12,10 +12,9 @@ import io.ktor.gson.*
 import io.ktor.features.*
 import io.ktor.client.*
 import io.ktor.client.engine.apache.*
-import org.camuthig.ktor.EncryptConfiguration
 
 fun main(args: Array<String>): Unit {
-    System.getProperties().setProperty("config.strategy", EncryptConfiguration.EncryptedConfigLoadingStrategy::class.java.name)
+    //System.getProperties().setProperty("config.strategy", EncryptConfiguration.EncryptedConfigLoadingStrategy::class.java.name)
     io.ktor.server.netty.EngineMain.main(args)
 }
 
