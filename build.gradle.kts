@@ -40,7 +40,9 @@ dependencies {
     compile("io.ktor:ktor-client-core:$ktor_version")
     compile("io.ktor:ktor-client-core-jvm:$ktor_version")
     compile("io.ktor:ktor-client-apache:$ktor_version")
-    compile("org.postgresql:postgresql:42.2.5")
+    implementation("io.ktor:ktor-locations:$ktor_version")
+    implementation("io.ktor:ktor-html-builder:$ktor_version")
+    implementation("org.postgresql:postgresql:42.2.5")
     implementation("org.camuthig.credentials:core:0.1.1")
     testCompile("io.ktor:ktor-server-tests:$ktor_version")
 }
@@ -51,6 +53,7 @@ kotlin.sourceSets["test"].kotlin.srcDirs("test")
 sourceSets["main"].resources.srcDirs("resources")
 sourceSets["test"].resources.srcDirs("testresources")
 
+// TODO use the defaults once the plugin supports it
 credentials {
     credentialsFile = file("resources/credentials.conf.enc")
     masterKeyFile = file("resources/master.key")
