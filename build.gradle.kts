@@ -9,6 +9,7 @@ plugins {
     application
     id("org.flywaydb.flyway") version "5.2.4"
     kotlin("jvm") version "1.3.20"
+    id("org.jetbrains.kotlin.kapt") version "1.3.21"
     id("org.camuthig.credentials") version "0.1.0"
 }
 
@@ -28,6 +29,12 @@ repositories {
     }
 }
 
+buildscript {
+    dependencies {
+        classpath("org.postgresql:postgresql:42.2.5")
+    }
+}
+
 dependencies {
     compile("org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version")
     compile("io.ktor:ktor-server-netty:$ktor_version")
@@ -44,6 +51,10 @@ dependencies {
     implementation("io.ktor:ktor-html-builder:$ktor_version")
     implementation("org.postgresql:postgresql:42.2.5")
     implementation("org.camuthig.credentials:core:0.1.1")
+    implementation("io.requery:requery:1.5.1")
+    implementation("io.requery:requery-kotlin:1.5.1")
+    kapt("javax.annotation:javax.annotation-api:1.2")
+    kapt("io.requery:requery-processor:1.5.1")
     testCompile("io.ktor:ktor-server-tests:$ktor_version")
 }
 
