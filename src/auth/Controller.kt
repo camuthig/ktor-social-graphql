@@ -11,13 +11,14 @@ import io.ktor.locations.location
 import io.ktor.routing.Routing
 import io.ktor.routing.get
 import io.ktor.routing.param
+import org.camuthig.ktor.respondView
 
 @Location("/login/{provider}/callback")
 data class LoginCallback(val provider: String)
 
 fun Routing.authRoutes() {
     get("/login") {
-        call.respondHtmlTemplate(LoginPage(call, oauthProviders(call.application)), HttpStatusCode.OK) {}
+        call.respondView(LoginPage(call, oauthProviders(call.application)))
     }
 
     authenticate {
@@ -31,9 +32,9 @@ fun Routing.authRoutes() {
             handle {
                 val principal = call.authentication.principal<OAuthAccessTokenResponse>()
                 if (principal != null) {
-                    call.respondHtmlTemplate(LoginSuccess(principal), HttpStatusCode.OK) {}
+                    call.respondView(LoginSuccess(principal))
                 } else {
-                    call.respondHtmlTemplate(LoginFailure(listOf("Unable to find principal")), HttpStatusCode.OK) {}
+                    call.respondView(LoginFailure(listOf("Unable to find principal")))
                 }
             }
         }

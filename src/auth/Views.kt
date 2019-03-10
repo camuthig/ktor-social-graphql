@@ -7,7 +7,6 @@ import io.ktor.html.Template
 import io.ktor.locations.locations
 import kotlinx.html.*
 
-// TODO Make the `call` parameter more implicit to all templates somehow. It should always be there.
 class LoginPage(private val call: ApplicationCall, private val loginProviders: Map<String, OAuthServerSettings>) : Template<HTML> {
     override fun HTML.apply() {
         head {
