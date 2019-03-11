@@ -13,5 +13,6 @@ interface User: Persistable {
     var name: String
     var email: String
     var nickname: String
-    var avatar_url: String?
+    @get:Column(name = "avatar_url")
+    var avatarUrl: String?
 }

@@ -3,7 +3,6 @@ package org.camuthig.auth
 import io.ktor.application.call
 import io.ktor.application.log
 import io.ktor.auth.OAuthAccessTokenResponse
-import io.ktor.auth.Principal
 import io.ktor.auth.authenticate
 import io.ktor.auth.authentication
 import io.ktor.html.respondHtmlTemplate
@@ -17,7 +16,6 @@ import io.ktor.routing.param
 import io.requery.kotlin.eq
 import org.camuthig.ktor.database
 import org.camuthig.ktor.respondView
-import java.util.*
 
 @Location("/login/{provider}/callback")
 data class LoginCallback(val provider: String)
@@ -70,7 +68,7 @@ fun Routing.authRoutes() {
                                     newUser.name = socialIdentity.name
                                     newUser.nickname = socialIdentity.nickname
                                     newUser.email = socialIdentity.email
-                                    newUser.avatar_url = socialIdentity.avatar
+                                    newUser.avatarUrl = socialIdentity.avatar
 
                                     insert(newUser)
 
@@ -86,9 +84,6 @@ fun Routing.authRoutes() {
                                 }
                             }
                         }
-
-                        println(user)
-
                     } else {
                         call.application.log.error("Unable to find identity provider configuration for $providerName")
                         call.respondView(LoginFailure(listOf("Unable to get user information from the login provider")))
