@@ -10,17 +10,16 @@ import io.ktor.http.HttpStatusCode
 import io.ktor.locations.Location
 import io.ktor.locations.location
 import io.ktor.locations.locations
+import io.ktor.response.respond
 import io.ktor.routing.Routing
 import io.ktor.routing.get
 import io.ktor.routing.param
-import io.requery.kotlin.eq
-import org.camuthig.ktor.database
 import org.camuthig.ktor.respondView
 
 @Location("/login/{provider}/callback")
 data class LoginCallback(val provider: String)
 
-fun Routing.authRoutes() {
+fun Routing.authRoutes(repository: Repository) {
     get("/login") {
         call.respondView(LoginPage(call, oauthProviders(call.application)))
     }
@@ -43,52 +42,17 @@ fun Routing.authRoutes() {
                         val socialIdentity = identityProvider.getIdentity(principal.accessToken)
 
                         // TODO should handle errors from this call as well
+                        var user = repository.getUser(providerName, socialIdentity)
 
-                        val user = database.invoke<User> {
-                            val query = select(Identity::class) where(Identity::provider eq providerName) and (Identity::id eq socialIdentity.id)
-                            val identity = query.get().firstOrNull()
-
-                            if (identity != null) {
-                                identity.user
-                            } else {
-                                val user = (select(User::class) where (User::email eq socialIdentity.email)).get().firstOrNull()
-
-                                if (user != null) {
-                                    val newIdentity = IdentityEntity()
-                                    newIdentity.provider = providerName
-                                    newIdentity.id = socialIdentity.id
-                                    newIdentity.user = user
-
-                                    insert(newIdentity)
-
-                                    user
-                                } else {
-                                    val newUser = UserEntity()
-
-                                    newUser.name = socialIdentity.name
-                                    newUser.nickname = socialIdentity.nickname
-                                    newUser.email = socialIdentity.email
-                                    newUser.avatarUrl = socialIdentity.avatar
-
-                                    insert(newUser)
-
-                                    val newIdentity = IdentityEntity()
-
-                                    newIdentity.id = socialIdentity.id
-                                    newIdentity.provider = providerName
-                                    newIdentity.user = newUser
-
-                                    insert(newIdentity)
-
-                                    newUser
-                                }
-                            }
+                        if (user == null) {
+                            user = repository.linkIdentity(providerName, socialIdentity)
                         }
+
+                        call.respond(user)
                     } else {
                         call.application.log.error("Unable to find identity provider configuration for $providerName")
                         call.respondView(LoginFailure(listOf("Unable to get user information from the login provider")))
                     }
-                    call.respondView(LoginSuccess(principal))
                 } else {
                     call.respondView(LoginFailure(listOf("Unable to find principal")))
                 }

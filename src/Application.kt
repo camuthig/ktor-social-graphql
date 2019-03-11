@@ -8,6 +8,7 @@ import io.ktor.gson.*
 import io.ktor.features.*
 import io.ktor.locations.Locations
 import org.camuthig.auth.*
+import org.camuthig.ktor.database
 
 fun main(args: Array<String>): Unit {
     io.ktor.server.netty.EngineMain.main(args)
@@ -29,6 +30,6 @@ fun Application.module(testing: Boolean = false) {
             call.respondText("HELLO WORLD!", contentType = ContentType.Text.Plain)
         }
 
-        authRoutes()
+        authRoutes(RequeryRepository(database))
     }
 }
