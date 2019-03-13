@@ -1,6 +1,8 @@
 package org.camuthig
 
 import io.ktor.application.*
+import io.ktor.auth.authenticate
+import io.ktor.auth.authentication
 import io.ktor.response.*
 import io.ktor.routing.*
 import io.ktor.http.*
@@ -17,8 +19,9 @@ fun main(args: Array<String>): Unit {
 @Suppress("unused") // Referenced in application.conf
 @kotlin.jvm.JvmOverloads
 fun Application.module(testing: Boolean = false) {
+    val userRepository = RequeryRepository(database)
     install(Locations)
-    installAuth()
+    installAuth(userRepository)
 
     install(ContentNegotiation) {
         gson {
@@ -30,6 +33,14 @@ fun Application.module(testing: Boolean = false) {
             call.respondText("HELLO WORLD!", contentType = ContentType.Text.Plain)
         }
 
-        authRoutes(RequeryRepository(database))
+        authRoutes(userRepository)
+
+        authenticate {
+            get("/me") {
+                val principal: UserPrincipal = call.authentication.principal()!!
+
+                call.respond(principal.user)
+            }
+        }
     }
 }

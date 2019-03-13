@@ -14,17 +14,20 @@ import io.ktor.response.respond
 import io.ktor.routing.Routing
 import io.ktor.routing.get
 import io.ktor.routing.param
+import org.camuthig.ktor.JwtConfig
 import org.camuthig.ktor.respondView
 
 @Location("/login/{provider}/callback")
 data class LoginCallback(val provider: String)
+
+data class LoginResponse(val accessToken: String)
 
 fun Routing.authRoutes(repository: Repository) {
     get("/login") {
         call.respondView(LoginPage(call, oauthProviders(call.application)))
     }
 
-    authenticate {
+    authenticate("oauth") {
         location<LoginCallback> {
             param("error") {
                 handle {
@@ -48,7 +51,7 @@ fun Routing.authRoutes(repository: Repository) {
                             user = repository.linkIdentity(providerName, socialIdentity)
                         }
 
-                        call.respond(user)
+                        call.respond(LoginResponse(JwtConfig.makeToken(user)))
                     } else {
                         call.application.log.error("Unable to find identity provider configuration for $providerName")
                         call.respondView(LoginFailure(listOf("Unable to get user information from the login provider")))

@@ -4,6 +4,11 @@ import org.camuthig.auth.social.SocialIdentity
 
 interface Repository {
     /**
+     * Get a user by the ID
+     */
+    fun getUser(id: Int): User?
+
+    /**
      * Get a user by their identifying email address
      */
     fun getUser(email: String): User?

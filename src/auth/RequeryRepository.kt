@@ -6,6 +6,12 @@ import io.requery.sql.KotlinEntityDataStore
 import org.camuthig.auth.social.SocialIdentity
 
 class RequeryRepository(val database: KotlinEntityDataStore<Persistable>): Repository {
+    override fun getUser(id: Int): User? {
+        return database.invoke {
+            (select (User::class) where (User::id eq id)).get().firstOrNull()
+        }
+    }
+
     override fun getUser(email: String): User? {
         return database.invoke {
             (select (User::class) where (User::email eq email)).get().firstOrNull()
