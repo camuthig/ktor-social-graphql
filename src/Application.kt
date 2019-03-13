@@ -20,7 +20,7 @@ fun main(args: Array<String>): Unit {
 @kotlin.jvm.JvmOverloads
 fun Application.module(testing: Boolean = false) {
     install(Locations)
-    installAuth(RequeryUserRepository(database))
+    installAuth()
 
     install(ContentNegotiation) {
         gson {

@@ -1,8 +1,9 @@
-package org.camuthig.auth
+package org.camuthig.auth.repository
 
 import io.requery.Persistable
 import io.requery.kotlin.*
 import io.requery.sql.KotlinEntityDataStore
+import org.camuthig.auth.*
 import org.camuthig.auth.social.SocialIdentity
 
 class RequeryUserRepository(val database: KotlinEntityDataStore<Persistable>): UserRepository {

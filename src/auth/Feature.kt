@@ -13,6 +13,7 @@ import io.ktor.request.host
 import io.ktor.routing.routing
 import org.camuthig.auth.config.JwtConfiguration
 import org.camuthig.auth.config.OAuthConfiguration
+import org.camuthig.auth.repository.RequeryUserRepository
 import org.camuthig.ktor.database
 
 fun Application.installAuth() {

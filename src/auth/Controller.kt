@@ -15,6 +15,7 @@ import io.ktor.routing.get
 import io.ktor.routing.param
 import org.camuthig.auth.config.JwtConfiguration
 import org.camuthig.auth.config.OAuthConfiguration
+import org.camuthig.auth.view.LoginPage
 import org.camuthig.ktor.respondView
 
 @Location("/login/{provider}/callback")
