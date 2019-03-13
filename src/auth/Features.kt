@@ -10,23 +10,27 @@ import io.ktor.client.HttpClient
 import io.ktor.client.engine.apache.Apache
 import io.ktor.locations.locations
 import io.ktor.request.host
-import org.camuthig.ktor.JwtConfig
+import io.ktor.routing.routing
+import org.camuthig.auth.config.JwtConfiguration
+import org.camuthig.auth.config.OAuthConfiguration
+import org.camuthig.ktor.database
 
-fun Application.installAuth(userRepository: Repository) {
+fun Application.installAuth() {
+    val userRepository = RequeryUserRepository(database)
     val jwtRealm = environment.config.property("jwt.realm").getString()
 
     install(Authentication) {
         oauth("oauth") {
             client = HttpClient(Apache)
             providerLookup = {
-                oauthProviders(application)[application.locations.resolve<LoginCallback>(LoginCallback::class, this).provider]
+                OAuthConfiguration.oauthProviders[application.locations.resolve<LoginCallback>(LoginCallback::class, this).provider]?.first
             }
             urlProvider = { p -> redirectUrl(LoginCallback(p.name), false) }
         }
 
         jwt {
             realm = jwtRealm
-            verifier(JwtConfig.verifier)
+            verifier(JwtConfiguration.verifier)
             validate { credential ->
                 val user = userRepository.getUser(credential.payload.subject.toInt())
 
@@ -37,6 +41,10 @@ fun Application.installAuth(userRepository: Repository) {
                 }
             }
         }
+    }
+
+    routing {
+        authRoutes(userRepository)
     }
 }
 

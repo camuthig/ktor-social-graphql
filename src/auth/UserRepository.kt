@@ -2,7 +2,7 @@ package org.camuthig.auth
 
 import org.camuthig.auth.social.SocialIdentity
 
-interface Repository {
+interface UserRepository {
     /**
      * Get a user by the ID
      */
@@ -11,7 +11,7 @@ interface Repository {
     /**
      * Get a user by their identifying email address
      */
-    fun getUser(email: String): User?
+    fun getUserByEmail(email: String): User?
 
     /**
      * Add a given user to the repository

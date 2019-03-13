@@ -19,9 +19,8 @@ fun main(args: Array<String>): Unit {
 @Suppress("unused") // Referenced in application.conf
 @kotlin.jvm.JvmOverloads
 fun Application.module(testing: Boolean = false) {
-    val userRepository = RequeryRepository(database)
     install(Locations)
-    installAuth(userRepository)
+    installAuth(RequeryUserRepository(database))
 
     install(ContentNegotiation) {
         gson {
@@ -31,16 +30,6 @@ fun Application.module(testing: Boolean = false) {
     routing {
         get("/") {
             call.respondText("HELLO WORLD!", contentType = ContentType.Text.Plain)
-        }
-
-        authRoutes(userRepository)
-
-        authenticate {
-            get("/me") {
-                val principal: UserPrincipal = call.authentication.principal()!!
-
-                call.respond(principal.user)
-            }
         }
     }
 }

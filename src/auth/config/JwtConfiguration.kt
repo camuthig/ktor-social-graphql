@@ -1,12 +1,13 @@
-package org.camuthig.ktor
+package org.camuthig.auth.config
 
 import com.auth0.jwt.JWT
 import com.auth0.jwt.JWTVerifier
 import com.auth0.jwt.algorithms.Algorithm
 import org.camuthig.auth.User
+import org.camuthig.ktor.Credentials
 import java.util.*
 
-object JwtConfig {
+object JwtConfiguration {
     private val secret = Credentials.get("jwt.secret")
     private const val issuer = "ktor.io"
     private const val validityInMs = 36_000_00 * 10 // 10 hours
