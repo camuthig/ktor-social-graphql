@@ -11,7 +11,7 @@ import org.junit.Before
 import org.koin.standalone.StandAloneContext.startKoin
 import org.koin.standalone.StandAloneContext.stopKoin
 
-open class BaseTest {
+interface BaseTest {
     @Before
     fun before() {
         startKoin(listOf(authModule))
@@ -25,7 +25,7 @@ open class BaseTest {
     /**
      * Create a test application engine, instantiating Koin and reading from the application.conf file
      */
-    protected fun <R> withConfiguredTestApplication(test: TestApplicationEngine.() -> R): R {
+    fun <R> withConfiguredTestApplication(test: TestApplicationEngine.() -> R): R {
         return withApplication(
             environment = createTestEnvironment({
                 config = HoconApplicationConfig(ConfigFactory.load("application.conf"))

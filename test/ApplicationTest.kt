@@ -4,7 +4,7 @@ import io.ktor.http.*
 import kotlin.test.*
 import io.ktor.server.testing.*
 
-class ApplicationTest: BaseTest() {
+class ApplicationTest: BaseTest {
     @Test
     fun testRoot() {
         withConfiguredTestApplication {

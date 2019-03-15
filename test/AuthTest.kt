@@ -9,7 +9,7 @@ import org.camuthig.ktor.database
 import org.junit.Test
 import kotlin.test.*
 
-class AuthTest: BaseTest() {
+class AuthTest: BaseTest {
     @Test
     fun `it should retrieve the authenticated user with a JWT`() {
        withConfiguredTestApplication {
@@ -23,7 +23,6 @@ class AuthTest: BaseTest() {
                database.invoke {
                    insert(user)
                }
-
 
                 val call = handleRequest(HttpMethod.Get, "/me") {
                     addHeader("Authorization", "Bearer ${JwtConfiguration.makeToken(user)}")
