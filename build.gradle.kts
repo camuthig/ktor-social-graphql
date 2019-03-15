@@ -53,6 +53,7 @@ dependencies {
     implementation("org.camuthig.credentials:core:0.1.1")
     implementation("io.requery:requery:1.5.1")
     implementation("io.requery:requery-kotlin:1.5.1")
+    implementation("org.koin:koin-ktor:1.0.2")
     kapt("javax.annotation:javax.annotation-api:1.2")
     kapt("io.requery:requery-processor:1.5.1")
     testCompile("io.ktor:ktor-server-tests:$ktor_version")

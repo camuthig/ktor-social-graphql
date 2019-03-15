@@ -15,9 +15,17 @@ import org.camuthig.auth.config.JwtConfiguration
 import org.camuthig.auth.config.OAuthConfiguration
 import org.camuthig.auth.repository.RequeryUserRepository
 import org.camuthig.ktor.database
+import org.koin.dsl.module.module
+import org.koin.ktor.ext.inject
+
+val authModule = module {
+    single<UserRepository> {
+        RequeryUserRepository(database)
+    }
+}
 
 fun Application.installAuth() {
-    val userRepository = RequeryUserRepository(database)
+    val userRepository: UserRepository by inject()
     val jwtRealm = environment.config.property("jwt.realm").getString()
 
     install(Authentication) {
