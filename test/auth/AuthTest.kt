@@ -14,7 +14,7 @@ import org.koin.test.KoinTest
 import org.koin.test.declare
 import kotlin.test.*
 
-class AuthTest: BaseTest, KoinTest {
+class AuthTest: BaseTest {
     @Before
     fun overrideModules() {
         declare {

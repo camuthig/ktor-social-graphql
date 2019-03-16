@@ -8,20 +8,18 @@ import io.ktor.server.testing.withApplication
 import org.camuthig.auth.authModule
 import org.junit.After
 import org.junit.Before
-import org.koin.core.KoinContext
-import org.koin.core.KoinProperties
-import org.koin.dsl.context.ModuleDefinition
 import org.koin.standalone.StandAloneContext.loadKoinModules
 import org.koin.standalone.StandAloneContext.stopKoin
+import org.koin.test.KoinTest
 
-interface BaseTest {
+interface BaseTest: KoinTest {
     @Before
-    fun startKoin() {
+    fun loadKoin() {
         loadKoinModules(mutableListOf(authModule))
     }
 
     @After
-    fun after() {
+    fun closeKoin() {
         stopKoin()
     }
 
