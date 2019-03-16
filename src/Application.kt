@@ -11,8 +11,10 @@ import io.ktor.features.*
 import io.ktor.locations.Locations
 import org.camuthig.auth.*
 import org.camuthig.ktor.database
+import org.koin.standalone.StandAloneContext.startKoin
 
 fun main(args: Array<String>): Unit {
+    startKoin(listOf(authModule))
     io.ktor.server.netty.EngineMain.main(args)
 }
 
