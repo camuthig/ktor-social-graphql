@@ -15,6 +15,7 @@ import org.camuthig.auth.config.JwtConfiguration
 import org.camuthig.auth.config.OAuthConfiguration
 import org.camuthig.auth.repository.RequeryUserRepository
 import org.camuthig.ktor.database
+import org.koin.dsl.module.applicationContext
 import org.koin.dsl.module.module
 import org.koin.ktor.ext.inject
 

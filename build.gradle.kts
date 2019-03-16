@@ -57,6 +57,7 @@ dependencies {
     kapt("javax.annotation:javax.annotation-api:1.2")
     kapt("io.requery:requery-processor:1.5.1")
     testCompile("io.ktor:ktor-server-tests:$ktor_version")
+    testCompile("org.koin:koin-test:1.0.2")
 }
 
 kotlin.sourceSets["main"].kotlin.srcDirs("src")
