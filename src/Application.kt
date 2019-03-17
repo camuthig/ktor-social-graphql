@@ -1,8 +1,6 @@
 package org.camuthig
 
 import io.ktor.application.*
-import io.ktor.auth.authenticate
-import io.ktor.auth.authentication
 import io.ktor.response.*
 import io.ktor.routing.*
 import io.ktor.http.*
@@ -10,7 +8,7 @@ import io.ktor.gson.*
 import io.ktor.features.*
 import io.ktor.locations.Locations
 import org.camuthig.auth.*
-import org.camuthig.ktor.database
+import org.camuthig.graphql.installGraphQL
 import org.koin.standalone.StandAloneContext.startKoin
 
 fun main(args: Array<String>): Unit {
@@ -23,6 +21,7 @@ fun main(args: Array<String>): Unit {
 fun Application.module(testing: Boolean = false) {
     install(Locations)
     installAuth()
+    installGraphQL()
 
     install(ContentNegotiation) {
         gson {

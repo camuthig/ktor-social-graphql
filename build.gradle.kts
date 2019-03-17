@@ -54,6 +54,8 @@ dependencies {
     implementation("io.requery:requery:1.5.1")
     implementation("io.requery:requery-kotlin:1.5.1")
     implementation("org.koin:koin-ktor:1.0.2")
+    implementation("com.graphql-java:graphql-java:11.0")
+    implementation("com.expedia:graphql-kotlin:0.2.8")
     kapt("javax.annotation:javax.annotation-api:1.2")
     kapt("io.requery:requery-processor:1.5.1")
     testCompile("io.ktor:ktor-server-tests:$ktor_version")
