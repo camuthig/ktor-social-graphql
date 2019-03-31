@@ -10,9 +10,12 @@ import io.ktor.locations.Location
 import io.ktor.locations.location
 import io.ktor.locations.locations
 import io.ktor.response.respond
+import io.ktor.response.respondRedirect
 import io.ktor.routing.Routing
 import io.ktor.routing.get
 import io.ktor.routing.param
+import io.ktor.sessions.sessions
+import io.ktor.sessions.set
 import org.camuthig.auth.config.JwtConfiguration
 import org.camuthig.auth.config.OAuthConfiguration
 import org.camuthig.auth.view.LoginPage
@@ -20,8 +23,6 @@ import org.camuthig.ktor.respondView
 
 @Location("/login/{provider}/callback")
 data class LoginCallback(val provider: String)
-
-data class LoginResponse(val accessToken: String)
 
 fun Routing.authRoutes(userRepository: UserRepository) {
     get("/login") {
@@ -60,7 +61,9 @@ fun Routing.authRoutes(userRepository: UserRepository) {
                             user = userRepository.linkIdentity(providerName, socialIdentity)
                         }
 
-                        call.respond(LoginResponse(JwtConfiguration.makeToken(user)))
+                        call.sessions.set(Session(JwtConfiguration.makeToken(user)))
+
+                        call.respondRedirect("/graphql-playground")
                     } else {
                         call.application.log.error("Missing identity provider configuration for $providerName")
                         call.respond(HttpStatusCode.NotFound)

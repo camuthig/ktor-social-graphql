@@ -9,6 +9,7 @@ import graphql.schema.GraphQLSchema
 import io.ktor.application.Application
 import io.ktor.application.ApplicationCall
 import io.ktor.application.call
+import io.ktor.auth.authenticate
 import io.ktor.http.content.defaultResource
 import io.ktor.http.content.static
 import io.ktor.request.receive
@@ -33,7 +34,7 @@ fun Application.installGraphQL() {
             .context(ApplicationCallContext(this))
             .query(request.query)
             .operationName(request.operationName)
-//            .variables(request.variables)
+            .variables(request.variables)
             .build()
 
         graphQL.execute(executionInput)
@@ -42,12 +43,14 @@ fun Application.installGraphQL() {
     }
 
     routing {
-        post("/graphql") {
-            call.executeQuery()
-        }
+        authenticate("session") {
+            post("/graphql") {
+                call.executeQuery()
+            }
 
-        get("/graphql") {
-            call.executeQuery()
+            get("/graphql") {
+                call.executeQuery()
+            }
         }
 
         static("/graphql-playground") {
