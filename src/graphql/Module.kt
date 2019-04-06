@@ -24,8 +24,9 @@ fun Application.installGraphQL() {
     val userRepository: UserRepository by inject()
 
     val config = SchemaGeneratorConfig(listOf("org.camuthig"))
-    val queries = listOf(TopLevelObject(UserQuery(userRepository)))
-    val schema: GraphQLSchema = toSchema(config = config, queries = queries)
+    val queries = listOf(TopLevelObject(UserQuery(userRepository)), TopLevelObject(TodoQuery()))
+    val mutations = listOf(TopLevelObject(TodoMutation()))
+    val schema: GraphQLSchema = toSchema(config = config, queries = queries, mutations = mutations)
     val graphQL = GraphQL.newGraphQL(schema).build()
 
     suspend fun ApplicationCall.executeQuery() {
