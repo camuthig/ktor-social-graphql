@@ -1,3 +1,8 @@
+import com.auth0.jwt.JWT
+import com.auth0.jwt.algorithms.Algorithm
+import org.gradle.internal.impldep.org.apache.http.client.utils.URLEncodedUtils
+import java.util.Date
+import java.net.URLEncoder
 import org.jetbrains.kotlin.gradle.dsl.Coroutines
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
@@ -32,6 +37,7 @@ repositories {
 buildscript {
     dependencies {
         classpath("org.postgresql:postgresql:42.2.5")
+        classpath("com.auth0:java-jwt:3.8.0")
     }
 }
 
@@ -79,4 +85,14 @@ flyway {
     user = credentials.getString("flyway.user")
     password = credentials.getString("flyway.password")
     url = credentials.getString("flyway.url")
+}
+
+tasks.register("createToken") {
+    val token = JWT.create()
+        .withSubject(System.getProperty("subjectId", "1"))
+        .withIssuer("ktor.io")
+        .withExpiresAt(Date(System.currentTimeMillis() + (36_000_00 * 10)))
+        .sign(Algorithm.HMAC512(credentials.getString("jwt.secret")))
+
+    println(URLEncoder.encode("accessToken=%23s$token", Charsets.UTF_8))
 }
