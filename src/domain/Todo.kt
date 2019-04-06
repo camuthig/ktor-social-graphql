@@ -3,9 +3,9 @@ package org.camuthig.domain
 import io.requery.*
 import org.camuthig.auth.User
 
-@Entity
+@Entity(name = "Todo")
 @Table(name = "todos")
-interface Todo: Persistable {
+interface TodoEntity: Persistable {
     @get:Key
     @get:Generated
     // TODO Move this back to a UUID once https://github.com/requery/requery/issues/824 is released
@@ -24,7 +24,7 @@ interface Todo: Persistable {
     @get:Column(name = "todo_list_id")
     @get:ForeignKey
     @get:ManyToOne
-    var todoList: TodoList?
+    var todoList: TodoListEntity?
 
     @get:Column(name = "created_by")
     @get:ForeignKey

@@ -6,9 +6,7 @@ import io.requery.kotlin.eq
 import org.camuthig.auth.User
 import org.camuthig.auth.UserPrincipal
 import org.camuthig.domain.Todo
-import org.camuthig.domain.TodoEntity
 import org.camuthig.domain.TodoList
-import org.camuthig.domain.TodoListEntity
 import org.camuthig.ktor.database
 
 class TodoMutation {
@@ -16,7 +14,7 @@ class TodoMutation {
 
     fun createTodoList(input: CreateTodoListInput, @GraphQLContext context: ApplicationCallContext): TodoList {
         return database.invoke {
-            val todoList = TodoListEntity()
+            val todoList = TodoList()
             todoList.title = input.title
             todoList.description = input.description
             todoList.createdBy = context.call.principal<UserPrincipal>()?.user!!
@@ -39,7 +37,7 @@ class TodoMutation {
                 (select (User::class) where (User::id eq input.assignedToId)).get().first()
             }
 
-            val todo = TodoEntity()
+            val todo = Todo()
             todo.title = input.title
             todo.description = input.description
             todo.todoList = todoList
