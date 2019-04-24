@@ -66,21 +66,13 @@ fun Application.installAuth() {
 
         session<Session>("session") {
             validate {
-                val session = sessions.get<Session>()
-
-                if (session != null) {
+                sessions.get<Session>()?.let { session ->
                     val token = session.accessToken
                     val jwt = JwtConfiguration.verifier.verify(token)
 
-                    val user = userRepository.getUser(jwt.subject.toInt())
-
-                    if (user != null) {
+                    userRepository.getUser(jwt.subject.toInt())?.let {user ->
                         UserPrincipal(user)
-                    } else {
-                        null
                     }
-                } else {
-                    null
                 }
             }
         }
