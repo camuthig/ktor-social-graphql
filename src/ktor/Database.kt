@@ -16,6 +16,6 @@ fun createDataSource(): KotlinEntityDataStore<Persistable> {
     dataSource.user = Credentials.get("flyway.user")
     dataSource.password = Credentials.get("flyway.password")
 
-    val configuration = KotlinConfiguration(dataSource = dataSource, model = Models.DEFAULT, quoteColumnNames = true)
+    val configuration = KotlinConfiguration(dataSource = dataSource, model = Models.DEFAULT, quoteColumnNames = true, useDefaultLogging = true)
     return KotlinEntityDataStore<Persistable>(configuration)
 }
