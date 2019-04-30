@@ -1,6 +1,5 @@
 import com.auth0.jwt.JWT
 import com.auth0.jwt.algorithms.Algorithm
-import org.gradle.internal.impldep.org.apache.http.client.utils.URLEncodedUtils
 import java.util.Date
 import java.net.URLEncoder
 import org.jetbrains.kotlin.gradle.dsl.Coroutines
